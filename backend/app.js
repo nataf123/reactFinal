@@ -1,11 +1,26 @@
 const express = require('express')
-const {connectDB, addFile, getFile} = require("./dbManager")
+const {connectDB, addFile, getFile, addUser, getUser, removeUser, getAllUsers} = require("./dbManager")
 const {urlGoogle, getGoogleAccountFromCode} = require('./googleSignup')
 const app = express()
 const cors = require('cors');
 app.use(cors());
 
 const port = 3456
+
+app.get('/listUsers', async (req, res) => {
+
+})
+
+app.get('/getUser', async (req, res) => {
+
+})
+
+app.get('/addUser', async (req, res) => {
+
+})
+app.get('/removeUser', async (req, res) => {
+
+})
 
 app.get('/listFiles', async (req, res) => {
 
@@ -41,6 +56,7 @@ app.listen(port, () => {
 
 async function main() {
   connectDB();
+  
 }
 
 main();
