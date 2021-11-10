@@ -1,13 +1,36 @@
 const express = require('express')
+const {connectDB, addFile, getFile} = require("./dbManager")
 const {urlGoogle, getGoogleAccountFromCode} = require('./googleSignup')
 const app = express()
-const port = 3000
+const cors = require('cors');
+app.use(cors());
 
-console.log(urlGoogle());
+const port = 3456
 
+app.get('/listFiles', async (req, res) => {
 
+})
+
+app.post('/fileDetail/virustotal', async (req, res) => {
+  
+})
+
+app.post('/fileDetail', async (req, res) => {
+  
+})
+
+app.post('fileDetail/remove', async (req, res) => {
+
+})
+
+app.post('/addFile', async (req, res) => {
+  console.log(req.body.data)
+  await addFile(...req.body.data);
+  res.send('added')
+})
 
 app.get('/', (req, res) => {
+  console.log('connected')
   res.send('Hello World!')
 })
 
@@ -16,8 +39,8 @@ app.listen(port, () => {
 })
 
 
+async function main() {
+  connectDB();
+}
 
- 
- 
-  
-
+main();
