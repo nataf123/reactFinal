@@ -23,12 +23,11 @@ const File = mongoose.model('File', fileSchema);
 const User = mongoose.model('User', userSchema);
 
 
-async function addFile(name, md5, size) {
+async function addFile(username, name, md5, size) {
     const file = new File({ name: name, md5: md5, size: size });
-
-    file.save(function (err) {
-        if (err) return handleError(err);
-    });
+    const user = getUser(username);
+    user.files.push(file)
+    await User.findOneAndUpdate({ _id: user._id }, user);
 }
 
 
@@ -51,7 +50,7 @@ async function removeFile(username, fileName) { //TODO: check of works
         user.files.splice(idx, 1);
     }
 
-    await User.findOneAndUpdate({ _id: user, _id }, user);
+    await User.findOneAndUpdate({ _id: user._id }, user);
     console.log(await getUser(username))
 
 
@@ -107,4 +106,4 @@ async function removeUser(username) {
 
 
 
-module.exports = { connectDB, addFile, getFile, addUser, getUser, removeUser, getAllUsers }
+module.exports = { connectDB, addFile, getFile, addUser, getUser, removeUser, getAllUsers, removeFile, getAllFiles }

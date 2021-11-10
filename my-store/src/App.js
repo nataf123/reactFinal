@@ -1,40 +1,75 @@
 import './App.css';
-import React, {Component} from 'react'
+import React, { Component, useState } from 'react'
+import { addFile, fileDetails, addUser, getUser, removeUser, listUsers, removeFile, listFiles, virustotal } from './requestHandler'
+
+function App() {
+  const [data, setData] = React.useState(null);
+  const [users, setUsers] = useState();
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://localhost:3456/")
+      setData(await response.text())
+    }
+    fetchData();
+  }, []);
 
 
-class App extends Component{
-constructor(props) 
-{
-  super(props);
-  this.state = { response: ""};
-}
 
-callAPI = () => 
-{
-  fetch("http://localhost:3456/")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }))
-      .catch(err => {
-        console.log(err);
-      })
-}
+  const Users = async () => {
+    const users = await getUser("shlomo");
+    console.log(users)
+    setUsers(JSON.stringify(users))
+    
+  }
 
-componentWillMount() 
-{
-  this.callAPI();
-}
-
-
-render() {
+  const fill = () => {
+    console.log("pressed")
+  }
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
-      <p className="App-intro">;{this.state.apiResponse}</p>
-      <p>hello</p>
+      <p>{!data ? "Loading..." : data}</p>
+      <p>{!users ? "loading users" : users}</p>
+
+      <button onClick={Users}>
+        listUsers
+      </button>
+
+      <button onClick={fill}>
+        addFile
+      </button>
+
+      <button onClick={fill}>
+        fileDetails
+      </button>
+
+      <button onClick={fill}>
+        addUser
+      </button>
+
+      <button onClick={fill}>
+        getUser
+      </button>
+
+      <button onClick={fill}>
+        removeUser
+      </button>
+
+      <button onClick={fill}>
+        removeFile
+      </button>
+
+      <button onClick={fill}>
+        listFiles
+      </button>
+
+      <button onClick={fill}>
+        virustotal
+      </button>
+
     </div>
   );
 }
 
-}
+
 export default App;
