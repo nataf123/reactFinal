@@ -3,7 +3,7 @@ import React, { Component, useState } from 'react'
 import { addFile, fileDetails, addUser, getUser, removeUser, listUsers, removeFile, listFiles, virustotal } from './requestHandler'
 
 function App() {
-  const [data, setData] = React.useState(null);
+  const [data, setData] = useState(null);
   const [users, setUsers] = useState();
 
   React.useEffect(() => {
@@ -16,22 +16,27 @@ function App() {
 
 
 
-  const Users = async () => {
-    const users = await getUser("shlomo");
+  const tryReq = async () => {
+    const users = await fileDetails("abcdef", "1.png");
     console.log(users)
-    setUsers(JSON.stringify(users))
-    
+    setUsers(JSON.stringify(users)) 
   }
 
   const fill = () => {
     console.log("pressed")
   }
+
   return (
     <div className="App">
       <p>{!data ? "Loading..." : data}</p>
       <p>{!users ? "loading users" : users}</p>
 
-      <button onClick={Users}>
+
+      <button onClick={tryReq}>
+        tryReq
+      </button>
+      <br></br>
+      <button onClick={fill}>
         listUsers
       </button>
 

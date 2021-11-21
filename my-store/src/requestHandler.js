@@ -8,21 +8,23 @@ export async function listUsers() {
 
 export async function getUser(name) {
     const response = await fetch(URL + 'getUser', {
-        method: 'post',
-        headers: {'Accept': 'application/json'},
-        body: JSON.stringify({username: name})          //TODO: check why cant find body
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: name})          
       })
       
     return await response.json();
 }
 
 export async function addUser(username, password) {
+  console.log("in add user")
     const response = await fetch(URL + 'addUser', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: username, password: password})
       })
-    return await response.json();
+      const res = await response.json();
+      return res.result;
 }
 
 export async function removeUser(username) {
@@ -31,7 +33,8 @@ export async function removeUser(username) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: username})
       })
-    return await response.json();
+      const res = await response.json();
+      return res.result;
 }
 
 export async function listFiles(username) {
@@ -72,11 +75,11 @@ export async function removeFile(username, filename) {
     return await response.json();
 }
 
-export async function addFile(filename, md5, size) {
+export async function addFile(username, filename, md5, size) {
     const response = await fetch(URL + 'addFile', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({data: [filename, md5, size]})
+        body: JSON.stringify({data: [username, filename, md5, size]})
       })
     return await response.json();
 }

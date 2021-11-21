@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 connectDB().catch(err => console.log(err));
 
 async function connectDB() {
-    await mongoose.connect('mongodb://localhost:27017/test');
+    await mongoose.connect('mongodb://localhost:27017/fileManager');
 }
 
 const fileSchema = new mongoose.Schema({
@@ -19,46 +19,91 @@ const userSchema = new mongoose.Schema({
     files: [fileSchema]
 });
 
+userSchema.statics.findAndModify = function (query, sort, doc, options, callback) {
+    return this.collection.findAndModify(query, sort, doc, options, callback);
+};
+
 const File = mongoose.model('File', fileSchema);
 const User = mongoose.model('User', userSchema);
 
 
 async function addFile(username, name, md5, size) {
     const file = new File({ name: name, md5: md5, size: size });
-    const user = getUser(username);
-    user.files.push(file)
+    file.save(function (err) {
+        if (err) return handleError(err);
+    });
+    const user = await getUser(username);
+    user.files.push(mongoose.Types.ObjectId(file._id))
     await User.findOneAndUpdate({ _id: user._id }, user);
 }
 
 
-async function getFile(username, fileName) {
+async function removeFile(username, fileName) { 
     const user = await getUser(username)
-    var file;
-    for (var i of user.files) {
-        if (i.name == fileName) {
-            return i;
+    const file = await getFile(username, fileName);
+    var idx = 0;
+ 
+    for( i of user.files){
+        if(i._doc.id.toString('hex') == file._id){
+            break;
         }
+        idx++;
     }
-}
 
-async function removeFile(username, fileName) { //TODO: check of works
-    const user = await getUser(username)
-    const file = getFile(username, fileName);
-
-    const idx = user.files.indexOf(file);
     if (idx > -1) {
         user.files.splice(idx, 1);
     }
 
-    await User.findOneAndUpdate({ _id: user._id }, user);
-    console.log(await getUser(username))
+    await User.findOneAndUpdate({ _id: user._id }, user); 
+
+    File.findByIdAndRemove(file._id, function (err, docs) {
+        if (err){
+            console.log(err)
+        }
+    });
 
 
+    return true;
+}
+
+async function getFileById(id) {
+    return await File.find({ _id: id }, null, { limit: 1 }, function (err, docs) {
+        if (err) {
+            return err;
+        }
+        return docs[0]
+    });
+}
+
+async function getFile(username, fileName) {
+    const user = await getUser(username)
+    var id;
+    for (var file of user.files) {
+        
+        if (file._doc.id) {
+            id = file._doc.id.toString('hex')
+        }
+        else {
+            id = file._id.toString('hex')
+        }
+        const data = await getFileById(id);
+        const currFile = data[0]
+        if (currFile.name == fileName) {
+            return currFile
+        }
+    }
 }
 
 async function getAllFiles(username) {
+    var files = []
     const user = await getUser(username)
-    return user.files;
+    for (var file of user.files) {
+        const id = file._doc.id.toString('hex')
+
+        files += await getFileById(id);
+    }
+
+    return files;
 }
 
 async function getAllUsers() {
@@ -102,6 +147,7 @@ async function removeUser(username) {
                 throw err;
         });
     }
+
 }
 
 
