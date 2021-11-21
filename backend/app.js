@@ -12,32 +12,53 @@ app.use(bp.urlencoded({ extended: true }))
 const port = 3456
 
 app.get('/listUsers', async (req, res) => {
-  const users = await getAllUsers();
-  console.log("users:" + users)
-  res.send(JSON.stringify(users))
-
+  try {
+    const users = await getAllUsers();
+    console.log("users:" + users)
+    res.send(JSON.stringify(users))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
 })
 
-app.post('/getUser', async (req, res) => {
-  const user = await getUser(req.body.username)
-  res.send(JSON.stringify(user));
 
+app.post('/getUser', async (req, res) => {
+  try {
+    const user = await getUser(req.body.username)
+    res.send(JSON.stringify(user));
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
 })
 
 app.post('/addUser', async (req, res) => {
-  console.log(req)
-  await addUser(req.body.username, req.body.password)
-  res.send(JSON.stringify({ result: true }))
+  try {
+    await addUser(req.body.username, req.body.password)
+    res.send(JSON.stringify({ result: true }))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
+
 })
 
 app.post('/removeUser', async (req, res) => {
-  await removeUser(req.body.username);
-  res.send(JSON.stringify({ result: true }))
+  try {
+    await removeUser(req.body.username);
+    res.send(JSON.stringify({ result: true }))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
+
 })
 
 app.post('/listFiles', async (req, res) => {
-  const files = await getAllFiles(req.body.username);
-  res.send(JSON.stringify(files));
+  try {
+    const files = await getAllFiles(req.body.username);
+    res.send(JSON.stringify(files));
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
+
 })
 
 app.post('/virustotal', async (req, res) => {
@@ -71,29 +92,40 @@ app.post('/virustotal', async (req, res) => {
       });
     }
 
-    console.log(counter);
     res.send(JSON.stringify({ malicious: counter }))
   });
 
 })
 
 app.post('/fileDetails', async (req, res) => {
-  const file = await getFile(req.body.username, req.body.filename);
+  try {
+    const file = await getFile(req.body.username, req.body.filename);
+    res.send(JSON.stringify(file))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
 
-  console.log(file)
-  res.send(JSON.stringify(file))
 })
 
 
 app.post('/removeFile', async (req, res) => {
-  await removeFile(req.body.username, req.body.filename)
-  res.send(JSON.stringify({ result: true }))
+  try {
+    await removeFile(req.body.username, req.body.filename)
+    res.send(JSON.stringify({ result: true }))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
+
 })
 
 app.post('/addFile', async (req, res) => {
-  console.log(req.body.data)
-  await addFile(...req.body.data);
-  res.send(JSON.stringify({ result: true }))
+  try {
+    await addFile(...req.body.data);
+    res.send(JSON.stringify({ result: true }))
+  } catch (error) {
+    res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+  }
+
 })
 
 app.get('/', (req, res) => {
@@ -105,6 +137,9 @@ app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })
 
+app.use(function (err, req, res, next) {
+  res.status(400).send(JSON.stringify({err : 'ERROR OCCURED'}));
+});
 
 async function main() {
   connectDB();

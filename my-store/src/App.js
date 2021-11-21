@@ -1,77 +1,41 @@
 import './App.css';
+import Users from './components/Users';
+import Files from './components/Files';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import AddFile from './components/AddFile';
+import Virustotal from './components/Virustotal';
+import ShowUser from './components/ShowUser';
+import ShowFile from './components/ShowFile';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { Component, useState } from 'react'
 import { addFile, fileDetails, addUser, getUser, removeUser, listUsers, removeFile, listFiles, virustotal } from './requestHandler'
+import Header from "./components/Header";
 
 function App() {
-  const [data, setData] = useState(null);
-  const [users, setUsers] = useState();
-
   React.useEffect(() => {
     async function fetchData() {
       const response = await fetch("http://localhost:3456/")
-      setData(await response.text())
     }
     fetchData();
   }, []);
 
-
-
-  const tryReq = async () => {
-    const users = await fileDetails("abcdef", "1.png");
-    console.log(users)
-    setUsers(JSON.stringify(users)) 
-  }
-
-  const fill = () => {
-    console.log("pressed")
-  }
-
   return (
     <div className="App">
-      <p>{!data ? "Loading..." : data}</p>
-      <p>{!users ? "loading users" : users}</p>
+      <Header />
+      <Router>
+        <Switch>
+          <Route path="/users" component={Users} exact />
+          <Route path="/files" component={Files} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/signup" component={Signup} exact />
+          <Route path="/addfile" component={AddFile} exact />
+          <Route path="/virustotal" component={Virustotal} exact />
+          <Route path="/showfile" component={ShowFile} exact />
+          <Route path="/showuser" component={ShowUser} exact />
 
-
-      <button onClick={tryReq}>
-        tryReq
-      </button>
-      <br></br>
-      <button onClick={fill}>
-        listUsers
-      </button>
-
-      <button onClick={fill}>
-        addFile
-      </button>
-
-      <button onClick={fill}>
-        fileDetails
-      </button>
-
-      <button onClick={fill}>
-        addUser
-      </button>
-
-      <button onClick={fill}>
-        getUser
-      </button>
-
-      <button onClick={fill}>
-        removeUser
-      </button>
-
-      <button onClick={fill}>
-        removeFile
-      </button>
-
-      <button onClick={fill}>
-        listFiles
-      </button>
-
-      <button onClick={fill}>
-        virustotal
-      </button>
-
+        </Switch>
+      </Router>
     </div>
   );
 }
