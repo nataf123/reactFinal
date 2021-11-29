@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
-import { addFile, fileDetails, addUser, getUser, removeUser, listUsers, removeFile, listFiles, virustotal } from '../requestHandler'
+import { addFile, fileDetails, addUser, getUser, removeUser, listUsers, removeFile, listFiles, virustotal } from '../../requestHandler'
 import Logo from "./Logo";
 
 const NavBar = (props) => {

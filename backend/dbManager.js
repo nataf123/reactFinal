@@ -108,7 +108,7 @@ async function getAllFiles(username) {
 
 async function getAllUsers() {
     var data;
-    await User.find({}, null, { limit: 5 }, function (err, docs) {
+    await User.find({}, null, function (err, docs) {
         if (err) {
             return err;
         }

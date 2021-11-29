@@ -1,5 +1,5 @@
 import React from 'react';
-import customTheme from "./components/theme";
+import customTheme from "./components/UI/theme";
 import { ChakraProvider } from "@chakra-ui/react"
 import ReactDOM from 'react-dom';
 import './index.css';
