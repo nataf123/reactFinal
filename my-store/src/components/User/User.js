@@ -14,9 +14,9 @@ const User = (props) => {
             <div>
                 {props.user.username}
             </div>
-            <div>
+            {/* <div>
                 <ul>{fileList}</ul>
-            </div>
+            </div> */}
         </div>
     )
 }

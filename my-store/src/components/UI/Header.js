@@ -5,8 +5,9 @@ import Logo from "./Logo";
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
-
   const toggle = () => setIsOpen(!isOpen);
+  
+
 
   return (
     <NavBarContainer {...props}>
@@ -73,10 +74,24 @@ const MenuLinks = ({ isOpen }) => {
         direction={["column", "row", "row", "row"]}
         pt={[4, 4, 0, 0]}
       >
-        <MenuItem to="/">Home</MenuItem>
         <MenuItem to="/users">Users </MenuItem>
         <MenuItem to="/files">Files </MenuItem>
-        <MenuItem to="/login">Login </MenuItem>
+        <MenuItem to="/logout">Logout </MenuItem>
+        <MenuItem to="/">
+        <Button
+            size="sm"
+            rounded="md"
+            color={["primary.500", "primary.500", "white", "white"]}
+            bg={["white", "white", "primary.500", "primary.500"]}
+            _hover={{
+              bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
+            }}
+          >
+            Home
+          </Button>
+        </MenuItem>
+
+        {/* <MenuItem to="/login">Login </MenuItem>
         <MenuItem to="/signup" isLast>
           <Button
             size="sm"
@@ -89,7 +104,9 @@ const MenuLinks = ({ isOpen }) => {
           >
             Create Account
           </Button>
-        </MenuItem>
+        </MenuItem> */}
+
+
       </Stack>
     </Box>
   );

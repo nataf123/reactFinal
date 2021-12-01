@@ -96,11 +96,19 @@ async function getFile(username, fileName) {
 
 async function getAllFiles(username) {
     var files = []
+    var id;
     const user = await getUser(username)
     for (var file of user.files) {
-        const id = file._doc.id.toString('hex')
+        if (file._doc.id) {
+            id = file._doc.id.toString('hex')
+        }
+        else {
+            id = file._id.toString('hex')
+        }
 
-        files += await getFileById(id);
+        const data = await getFileById(id);
+        const currFile = data[0]
+        files.push(currFile);
     }
 
     return files;
@@ -134,6 +142,9 @@ async function getUser(name) {
         }
         data = docs[0]
     });
+    if(!data){
+        throw "User Not Found!"
+    }
     return data;
 }
 

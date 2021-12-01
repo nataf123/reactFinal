@@ -30,16 +30,19 @@ const Signup = (props) => {
 
     const handleShowClick = () => setShowPassword(!showPassword);
 
+    const onClickSignup = () => {
+        sessionStorage.setItem('loginMethod', "signup");
+      }
+
     const handleSignup = async (e) => {
         e.preventDefault();
         const res = await addUser(username, password)
         if (res == true) {
-            props.setIsLogged(true);
+            sessionStorage.setItem('isLogged', true);
         }
         else {
             setShowAlert(true);
         }
-
     }
 
 
@@ -115,7 +118,7 @@ const Signup = (props) => {
             </Stack>
             <Box>
                 Already have an account?{" "}
-                <Link color="primary.500" href="/login">
+                <Link color="primary.500" href="/login" onClick={onClickSignup}>
                     Log in
                 </Link>
             </Box>

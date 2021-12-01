@@ -1,10 +1,8 @@
 import React from "react";
+import FileCard from "./FileCard";
 
-const  ShowFile = async () => {
-
-    return (
-        <div>ShowFile</div>
-    )
+const ShowFile = () => {
+    return<FileCard/>
 }
 
 export default ShowFile;

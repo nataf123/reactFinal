@@ -12,7 +12,6 @@ export async function getUser(name) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: name})          
       })
-      
     return await response.json();
 }
 
