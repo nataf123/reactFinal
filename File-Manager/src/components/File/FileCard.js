@@ -59,10 +59,6 @@ const FileCard = (props) => {
                     </Stack>
                     <Flex>
                         <Spacer />
-                        <Button variant="solid"
-                            colorScheme="green" size="sm" onClick={checkVirusTotal} disabled={disableButton}>
-                            {buttonText}
-                        </Button>
 
                         <Button variant="solid"
                             colorScheme="red" size="sm" onClick={deleteFile}>

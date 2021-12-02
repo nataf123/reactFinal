@@ -5,7 +5,6 @@ import Files from './components/File/Files';
 import Login from './components/login/Login';
 import Signup from './components/login/Signup';
 import AddFile from './components/File/AddFile';
-import Virustotal from './components/virustotal/Virustotal';
 import ShowUser from './components/User/ShowUser';
 import ShowFile from './components/File/ShowFile';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
@@ -44,7 +43,6 @@ function App() {
           <Route path="/users" component={Users} exact />
           <Route path="/files" component={Files} exact />
           <Route path="/addfile" component={AddFile} exact />
-          <Route path="/virustotal" component={Virustotal} exact />
           <Route path="/showfile" component={ShowFile} exact />
           <Route path="/users/:username" component={ShowUser} exact />
           <Route path="/" component={Home} />
