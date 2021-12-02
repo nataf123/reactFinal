@@ -65,11 +65,11 @@ export async function fileDetails(username, filename) {
     return await response.json();
 }
 
-export async function removeFile(username, filename) {
+export async function removeFile(username, fileId) {
     const response = await fetch(URL + 'removeFile', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username, filename : filename})
+        body: JSON.stringify({username: username, fileId : fileId})
       })
     return await response.json();
 }

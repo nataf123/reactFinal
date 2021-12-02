@@ -61,6 +61,10 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   );
 };
 
+const logout = () => {
+  sessionStorage.setItem('isLogged', false);
+}
+
 const MenuLinks = ({ isOpen }) => {
   return (
     <Box
@@ -74,9 +78,9 @@ const MenuLinks = ({ isOpen }) => {
         direction={["column", "row", "row", "row"]}
         pt={[4, 4, 0, 0]}
       >
-        <MenuItem to="/users">Users </MenuItem>
+        <MenuItem to="/users" >Users </MenuItem>
         <MenuItem to="/files">Files </MenuItem>
-        <MenuItem to="/logout">Logout </MenuItem>
+        <MenuItem to="/" onClick={logout}>Logout </MenuItem>
         <MenuItem to="/">
         <Button
             size="sm"

@@ -39,6 +39,7 @@ const Signup = (props) => {
         const res = await addUser(username, password)
         if (res == true) {
             sessionStorage.setItem('isLogged', true);
+            window.location.reload(false);
         }
         else {
             setShowAlert(true);

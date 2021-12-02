@@ -38,14 +38,24 @@ async function addFile(username, name, md5, size) {
 }
 
 
-async function removeFile(username, fileName) { 
+async function removeFile(username, fileId) {
     const user = await getUser(username)
-    const file = await getFile(username, fileName);
+    console.log("user: " + username);
+
+    console.log("file: " + fileId);
     var idx = 0;
- 
-    for( i of user.files){
-        if(i._doc.id.toString('hex') == file._id){
-            break;
+
+    for (i of user.files) {
+
+        if (i._doc.id) {
+            if(i._doc.id.toString('hex') == fileId){
+                break;
+            }
+        }
+        else {
+            if (i._id.toString('hex') == fileId) {
+                break;
+            }
         }
         idx++;
     }
@@ -54,14 +64,13 @@ async function removeFile(username, fileName) {
         user.files.splice(idx, 1);
     }
 
-    await User.findOneAndUpdate({ _id: user._id }, user); 
+    await User.findOneAndUpdate({ _id: user._id }, user);
 
-    File.findByIdAndRemove(file._id, function (err, docs) {
-        if (err){
+    File.findByIdAndRemove(fileId, function (err, docs) {
+        if (err) {
             console.log(err)
         }
     });
-
 
     return true;
 }
@@ -79,7 +88,7 @@ async function getFile(username, fileName) {
     const user = await getUser(username)
     var id;
     for (var file of user.files) {
-        
+
         if (file._doc.id) {
             id = file._doc.id.toString('hex')
         }
@@ -142,7 +151,7 @@ async function getUser(name) {
         }
         data = docs[0]
     });
-    if(!data){
+    if (!data) {
         throw "User Not Found!"
     }
     return data;
@@ -150,12 +159,11 @@ async function getUser(name) {
 
 async function removeUser(username) {
     const user = await getUser(username)
-
+    console.log(user._id)
     if (user) {
         User.findByIdAndRemove(user._id, function (err, user) {
-            console.log('deleting user', user.username);
             if (err)
-                throw err;
+                console.log(err);
         });
     }
 
